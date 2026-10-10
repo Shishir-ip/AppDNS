@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">AppDNS</string>
+    <string name="accessibility_service_description">Enables AppDNS to detect when configured applications open and close, automatically switching to your designated private DNS profile without draining battery.</string>
+    <string name="tile_dns_toggle_label">AppDNS</string>
+    <string name="tile_dns_selector_label">DNS Profile</string>
+    <string name="notification_channel_name">AppDNS Service Status</string>
+    <string name="notification_channel_desc">Shows active DNS routing profile and quick toggle controls</string>
+</resources>

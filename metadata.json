@@ -1,0 +1,6 @@
+{
+  "name": "AppDNS",
+  "description": "Per-application private DNS switcher and privacy router with Quick Settings tiles and auto-switching rules.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
