@@ -1,8 +1,10 @@
 package com.example.service
 
+import android.graphics.drawable.Icon
 import android.os.Build
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
+import com.example.R
 import com.example.system.PrivateDnsManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -57,6 +59,7 @@ class AppDnsToggleTileService : TileService() {
         val isActive = mode == PrivateDnsManager.MODE_HOSTNAME || mode == PrivateDnsManager.MODE_OPPORTUNISTIC
 
         tile.state = if (isActive) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
+        tile.icon = Icon.createWithResource(this, R.drawable.ic_qs_dns_tile)
         tile.label = "Private DNS"
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

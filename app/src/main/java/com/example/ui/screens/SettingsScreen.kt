@@ -4,14 +4,11 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
-import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,10 +28,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Accessibility
 import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Dashboard
-import androidx.compose.material.icons.filled.Dns
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material3.Button
@@ -46,7 +40,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -68,6 +61,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -101,6 +95,12 @@ fun SettingsScreen(
         allProfiles.firstOrNull { it.id == defaultProfileId }?.name ?: "Cloudflare 1.1.1.1"
     }
 
+    // Memoize battery optimization check to avoid blocking IPC calls during composition
+    val isIgnoringBattery = remember(context) {
+        val powerManager = context.getSystemService(Context.POWER_SERVICE) as? PowerManager
+        powerManager?.isIgnoringBatteryOptimizations(context.packageName) == true
+    }
+
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -109,7 +109,7 @@ fun SettingsScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         // Section 1: System Permissions (Zero VPN)
-        item {
+        item(key = "permissions_header") {
             Text(
                 text = "System Permissions (Zero VPN Required)",
                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
@@ -117,7 +117,7 @@ fun SettingsScreen(
             )
         }
 
-        item {
+        item(key = "permissions_card") {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(18.dp),
@@ -233,9 +233,6 @@ fun SettingsScreen(
                     )
 
                     // Battery Optimization
-                    val powerManager = context.getSystemService(Context.POWER_SERVICE) as? PowerManager
-                    val isIgnoringBattery = powerManager?.isIgnoringBatteryOptimizations(context.packageName) == true
-
                     PermissionStatusRow(
                         title = "Battery Unrestricted Mode",
                         subtitle = "Prevents OEM task killers from pausing auto-switch",
@@ -256,7 +253,7 @@ fun SettingsScreen(
         }
 
         // Section 2: Automation & Rules
-        item {
+        item(key = "automation_header") {
             Text(
                 text = "Automation & Auto-Switching",
                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
@@ -264,7 +261,7 @@ fun SettingsScreen(
             )
         }
 
-        item {
+        item(key = "automation_card") {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(18.dp),
@@ -301,7 +298,7 @@ fun SettingsScreen(
         }
 
         // Section 3: Baseline Defaults
-        item {
+        item(key = "defaults_header") {
             Text(
                 text = "Baseline Defaults",
                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
@@ -309,7 +306,7 @@ fun SettingsScreen(
             )
         }
 
-        item {
+        item(key = "defaults_card") {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(18.dp),
@@ -427,7 +424,7 @@ fun SettingsScreen(
         }
 
         // Section 4: Quick Settings Tiles Guide
-        item {
+        item(key = "tiles_guide_card") {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(18.dp),
@@ -469,11 +466,13 @@ fun SettingsScreen(
                     ) {
                         TileBadge(
                             title = "Private DNS Toggle",
-                            desc = "Instant system On/Off"
+                            desc = "Instant system On/Off",
+                            modifier = Modifier.weight(1f)
                         )
                         TileBadge(
                             title = "DNS Profile",
-                            desc = "One-tap profile cycler"
+                            desc = "One-tap profile cycler",
+                            modifier = Modifier.weight(1f)
                         )
                     }
                 }
@@ -481,7 +480,7 @@ fun SettingsScreen(
         }
 
         // Section 5: Direct Settings Privacy Guarantee
-        item {
+        item(key = "privacy_guarantee_card") {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(18.dp),
@@ -626,9 +625,9 @@ private fun SettingToggleRow(
 }
 
 @Composable
-private fun TileBadge(title: String, desc: String) {
+private fun TileBadge(title: String, desc: String, modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .clip(RoundedCornerShape(10.dp))
             .background(DarkNavyCard)
             .border(1.dp, DarkBorder, RoundedCornerShape(10.dp))
@@ -638,12 +637,16 @@ private fun TileBadge(title: String, desc: String) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
-                color = CyberCyan
+                color = CyberCyan,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
             Text(
                 text = desc,
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         }
     }

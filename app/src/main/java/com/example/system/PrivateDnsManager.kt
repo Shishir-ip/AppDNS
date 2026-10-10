@@ -47,6 +47,11 @@ object PrivateDnsManager {
     fun setHostname(context: Context, hostname: String): Boolean {
         return try {
             val cr: ContentResolver = context.contentResolver
+            val currentMode = getPrivateDnsMode(context)
+            val currentSpec = getPrivateDnsSpecifier(context)
+            if (currentMode == MODE_HOSTNAME && currentSpec == hostname) {
+                return true
+            }
             val modeSuccess = Settings.Global.putString(cr, PRIVATE_DNS_MODE, MODE_HOSTNAME)
             val specSuccess = Settings.Global.putString(cr, PRIVATE_DNS_SPECIFIER, hostname)
             modeSuccess && specSuccess
@@ -63,6 +68,10 @@ object PrivateDnsManager {
     fun turnOff(context: Context): Boolean {
         return try {
             val cr: ContentResolver = context.contentResolver
+            val currentMode = getPrivateDnsMode(context)
+            if (currentMode == MODE_OFF) {
+                return true
+            }
             Settings.Global.putString(cr, PRIVATE_DNS_MODE, MODE_OFF)
         } catch (e: SecurityException) {
             false
@@ -77,6 +86,10 @@ object PrivateDnsManager {
     fun setOpportunistic(context: Context): Boolean {
         return try {
             val cr: ContentResolver = context.contentResolver
+            val currentMode = getPrivateDnsMode(context)
+            if (currentMode == MODE_OPPORTUNISTIC) {
+                return true
+            }
             Settings.Global.putString(cr, PRIVATE_DNS_MODE, MODE_OPPORTUNISTIC)
         } catch (e: SecurityException) {
             false

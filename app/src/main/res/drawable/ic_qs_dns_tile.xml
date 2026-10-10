@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Security Shield Outline -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M12,2L4,5.5v5.8c0,5.1 3.4,9.85 8,11.2c4.6,-1.35 8,-6.1 8,-11.2V5.5L12,2z M12,3.9l6.5,2.8v4.6c0,4.2 -2.8,8.2 -6.5,9.4c-3.7,-1.2 -6.5,-5.2 -6.5,-9.4V6.7L12,3.9z" />
+
+    <!-- Lock Shackle -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.4"
+        android:strokeLineCap="round"
+        android:pathData="M10.2,11V9.5c0,-1 0.8,-1.8 1.8,-1.8s1.8,0.8 1.8,1.8V11" />
+
+    <!-- Lock Body with Keyhole Cutout -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:fillType="evenOdd"
+        android:pathData="M9,11h6c0.55,0 1,0.45 1,1v4c0,0.55 -0.45,1 -1,1H9c-0.55,0 -1,-0.45 -1,-1v-4C8,11.45 8.45,11 9,11z M12,12.5c-0.45,0 -0.8,0.35 -0.8,0.8c0,0.3 0.17,0.55 0.42,0.68L11.4,15.2h1.2l-0.22,-1.22c0.25,-0.13 0.42,-0.38 0.42,-0.68C12.8,12.85 12.45,12.5 12,12.5z" />
+
+    <!-- Network Routing Circuit Nodes -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M6,13.5a0.9,0.9 0 1,0 1.8,0a0.9,0.9 0 1,0 -1.8,0 M16.2,13.5a0.9,0.9 0 1,0 1.8,0a0.9,0.9 0 1,0 -1.8,0 M6.8,9.2a0.8,0.8 0 1,0 1.6,0a0.8,0.8 0 1,0 -1.6,0 M15.6,9.2a0.8,0.8 0 1,0 1.6,0a0.8,0.8 0 1,0 -1.6,0" />
+
+    <!-- Network Routing Circuit Traces -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="0.9"
+        android:strokeLineCap="round"
+        android:pathData="M6.9,13.5H8 M16,13.5h1.1 M7.5,9.7L8.5,11.2 M16.5,9.7L15.5,11.2" />
+
+</vector>

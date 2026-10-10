@@ -3,6 +3,7 @@ package com.example.service
 import android.content.ComponentName
 import android.content.Context
 import android.service.quicksettings.TileService
+import android.util.Log
 import com.example.data.db.AppDnsDatabase
 import com.example.data.model.AppRule
 import com.example.data.model.DnsProfile
@@ -10,7 +11,9 @@ import com.example.data.repository.DnsRepository
 import com.example.system.PrivateDnsManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -58,6 +61,7 @@ class AppDnsController private constructor(private val context: Context) {
 
     private var lastRulePackage: String? = null
     private var lastRuleExitAction: String? = null
+    private var switchJob: Job? = null
 
     init {
         refreshSystemDnsState()
@@ -172,18 +176,34 @@ class AppDnsController private constructor(private val context: Context) {
     }
 
     /**
+     * Checks if a package is neutral (system UI, IME, permission controller dialogs, or this app).
+     * Neutral packages do not trigger rule evaluation or exit actions, leaving current DNS intact.
+     */
+    fun isNeutralPackage(packageName: String): Boolean {
+        if (packageName == context.packageName) return true
+        if (packageName in NEUTRAL_PACKAGES) return true
+        if (packageName.contains("permissioncontroller", ignoreCase = true)) return true
+        if (packageName.contains("inputmethod", ignoreCase = true)) return true
+        return false
+    }
+
+    /**
      * Called whenever an application opens or changes focus in foreground.
      */
     fun onForegroundAppChanged(packageName: String) {
-        if (packageName == context.packageName) return
-        if (packageName == "com.android.systemui" || packageName.contains("inputmethod")) return
+        if (isNeutralPackage(packageName)) return
 
         val previousPkg = _currentForegroundApp.value
-        if (previousPkg == packageName) return
+        if (previousPkg == packageName && switchJob?.isActive != true) return
 
-        _currentForegroundApp.value = packageName
+        switchJob?.cancel()
+        switchJob = scope.launch(Dispatchers.IO) {
+            delay(DEBOUNCE_DELAY_MS)
 
-        scope.launch(Dispatchers.IO) {
+            withContext(Dispatchers.Main) {
+                _currentForegroundApp.value = packageName
+            }
+
             val pm = context.packageManager
             val appLabel = try {
                 val appInfo = pm.getApplicationInfo(packageName, 0)
@@ -223,7 +243,17 @@ class AppDnsController private constructor(private val context: Context) {
                 // If previous app had a rule and we just exited it, apply exit action!
                 if (lastRulePackage != null) {
                     val exitAction = lastRuleExitAction ?: repository.getFallbackAction()
-                    val exitedAppName = _currentForegroundAppName.value ?: "App"
+                    val exitedAppName = try {
+                        val exitedInfo = pm.getApplicationInfo(lastRulePackage ?: "", 0)
+                        pm.getApplicationLabel(exitedInfo).toString()
+                    } catch (e: Exception) {
+                        "App"
+                    }
+
+                    Log.d(
+                        TAG,
+                        "Exit action ($exitAction) triggered by package: $packageName (exited rule for: $lastRulePackage)"
+                    )
 
                     when (exitAction) {
                         AppRule.ACTION_TURN_OFF -> {
@@ -283,6 +313,23 @@ class AppDnsController private constructor(private val context: Context) {
     }
 
     companion object {
+        private const val TAG = "AppDnsController"
+
+        /**
+         * Debounce window (ms) to ensure a foreground package stays in front
+         * briefly before evaluating DNS rules or firing exit actions.
+         */
+        const val DEBOUNCE_DELAY_MS = 350L
+
+        /**
+         * Neutral system packages that should never trigger an exit action or rule evaluation,
+         * preserving current DNS state and remembering the underlying foreground app.
+         */
+        val NEUTRAL_PACKAGES = setOf(
+            "com.android.systemui",
+            "com.android.packageinstaller"
+        )
+
         @Volatile
         private var instance: AppDnsController? = null
 

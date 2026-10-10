@@ -12,14 +12,17 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
@@ -75,6 +78,10 @@ import com.example.ui.theme.NeonGreen
 import com.example.ui.viewmodel.AppDnsViewModel
 import com.example.ui.viewmodel.AppFilter
 import kotlinx.coroutines.launch
+
+// Pre-allocated brush definitions to eliminate GC allocations during scroll
+private val ActiveRuleBorderBrush = Brush.horizontalGradient(listOf(CyberCyan.copy(alpha = 0.5f), NeonGreen.copy(alpha = 0.4f)))
+private val InactiveRuleBorderBrush = Brush.horizontalGradient(listOf(DarkBorder, DarkBorder))
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -146,7 +153,7 @@ fun AppRulesScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                item {
+                item(key = "filter_all") {
                     FilterChip(
                         selected = selectedFilter == AppFilter.ALL,
                         onClick = { viewModel.setFilter(AppFilter.ALL) },
@@ -157,7 +164,7 @@ fun AppRulesScreen(
                         )
                     )
                 }
-                item {
+                item(key = "filter_configured") {
                     FilterChip(
                         selected = selectedFilter == AppFilter.CONFIGURED,
                         onClick = { viewModel.setFilter(AppFilter.CONFIGURED) },
@@ -168,7 +175,7 @@ fun AppRulesScreen(
                         )
                     )
                 }
-                item {
+                item(key = "filter_user") {
                     FilterChip(
                         selected = selectedFilter == AppFilter.USER,
                         onClick = { viewModel.setFilter(AppFilter.USER) },
@@ -179,7 +186,7 @@ fun AppRulesScreen(
                         )
                     )
                 }
-                item {
+                item(key = "filter_system") {
                     FilterChip(
                         selected = selectedFilter == AppFilter.SYSTEM,
                         onClick = { viewModel.setFilter(AppFilter.SYSTEM) },
@@ -258,7 +265,8 @@ fun AppRulesScreen(
         ModalBottomSheet(
             onDismissRequest = { selectedAppToConfig = null },
             sheetState = sheetState,
-            containerColor = DarkNavyCard
+            containerColor = DarkNavyCard,
+            modifier = Modifier.imePadding()
         ) {
             RuleConfigSheetContent(
                 appInfo = app,
@@ -311,9 +319,9 @@ private fun AppRuleRowItem(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         border = if (isConfigured && rule.isEnabled) {
-            CardDefaults.outlinedCardBorder().copy(brush = Brush.horizontalGradient(listOf(CyberCyan.copy(alpha = 0.5f), NeonGreen.copy(alpha = 0.4f))))
+            CardDefaults.outlinedCardBorder().copy(brush = ActiveRuleBorderBrush)
         } else {
-            CardDefaults.outlinedCardBorder().copy(brush = Brush.horizontalGradient(listOf(DarkBorder, DarkBorder)))
+            CardDefaults.outlinedCardBorder().copy(brush = InactiveRuleBorderBrush)
         }
     ) {
         Row(
@@ -361,13 +369,17 @@ private fun AppRuleRowItem(
                         Text(
                             text = configuredProfile?.name ?: "Selected DNS",
                             style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
-                            color = if (rule.isEnabled) CyberCyan else MaterialTheme.colorScheme.onSurfaceVariant
+                            color = if (rule.isEnabled) CyberCyan else MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
                             text = "• on exit: ${rule.onExitAction.replace("ACTION_", "").lowercase()}",
                             style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 } else {
@@ -421,6 +433,7 @@ private fun RuleConfigSheetContent(
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
             .padding(horizontal = 24.dp, vertical = 16.dp)
             .testTag("configure_rule_bottom_sheet")
     ) {
@@ -432,11 +445,13 @@ private fun RuleConfigSheetContent(
                 size = 50.dp
             )
             Spacer(modifier = Modifier.width(14.dp))
-            Column {
+            Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = appInfo.appName,
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = appInfo.packageName,
@@ -458,14 +473,12 @@ private fun RuleConfigSheetContent(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        // Profiles selector
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp),
+        // Profiles selector in smooth unified container
+        Column(
+            modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(allProfiles, key = { it.id }) { profile ->
+            allProfiles.forEach { profile ->
                 val isSelected = profile.id == selectedProfileId
                 Row(
                     modifier = Modifier
@@ -598,7 +611,7 @@ private fun ExitActionRadioItem(
             onClick = onClick
         )
         Spacer(modifier = Modifier.width(8.dp))
-        Column {
+        Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),

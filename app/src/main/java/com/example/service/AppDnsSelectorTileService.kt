@@ -1,8 +1,10 @@
 package com.example.service
 
+import android.graphics.drawable.Icon
 import android.os.Build
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
+import com.example.R
 import com.example.system.PrivateDnsManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -48,6 +50,7 @@ class AppDnsSelectorTileService : TileService() {
         val isActive = mode == PrivateDnsManager.MODE_HOSTNAME
 
         tile.state = if (isActive) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
+        tile.icon = Icon.createWithResource(this, R.drawable.ic_qs_dns_selector)
         tile.label = profile?.name?.take(16) ?: "DNS Profile"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             tile.subtitle = if (isActive) (profile?.dotHost?.take(18) ?: "Active") else "Tap to apply"

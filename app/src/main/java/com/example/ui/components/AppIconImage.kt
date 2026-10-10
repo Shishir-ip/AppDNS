@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.util.LruCache
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -21,6 +22,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+// Global LRU cache for decoded app icons (128 entries)
+// Prevents GC allocations and frame drops during 90Hz/120Hz/144Hz list scrolling
+private val iconBitmapCache = LruCache<Int, Bitmap>(128)
+
 @Composable
 fun AppIconImage(
     drawable: Drawable?,
@@ -29,7 +34,7 @@ fun AppIconImage(
     size: Dp = 44.dp
 ) {
     val bitmap = remember(drawable) {
-        drawable?.let { drawableToBitmap(it, size = 128) }
+        drawable?.let { getCachedBitmap(it, size = 128) }
     }
 
     if (bitmap != null) {
@@ -41,7 +46,8 @@ fun AppIconImage(
                 .clip(RoundedCornerShape(12.dp))
         )
     } else {
-        // Fallback letter avatar
+        // Fallback letter avatar with memoized initial
+        val initial = remember(appName) { appName.take(1).uppercase() }
         Box(
             modifier = modifier
                 .size(size)
@@ -50,7 +56,7 @@ fun AppIconImage(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = appName.take(1).uppercase(),
+                text = initial,
                 style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp),
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
@@ -58,17 +64,22 @@ fun AppIconImage(
     }
 }
 
-private fun drawableToBitmap(drawable: Drawable, size: Int): Bitmap? {
+private fun getCachedBitmap(drawable: Drawable, size: Int): Bitmap? {
+    if (drawable is BitmapDrawable && drawable.bitmap != null) {
+        return drawable.bitmap
+    }
+    val cacheKey = System.identityHashCode(drawable)
+    val cached = iconBitmapCache.get(cacheKey)
+    if (cached != null) return cached
+
     return try {
-        if (drawable is BitmapDrawable && drawable.bitmap != null) {
-            return drawable.bitmap
-        }
         val width = if (drawable.intrinsicWidth > 0) drawable.intrinsicWidth else size
         val height = if (drawable.intrinsicHeight > 0) drawable.intrinsicHeight else size
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         drawable.setBounds(0, 0, canvas.width, canvas.height)
         drawable.draw(canvas)
+        iconBitmapCache.put(cacheKey, bitmap)
         bitmap
     } catch (e: Exception) {
         null

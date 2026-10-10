@@ -6,15 +6,12 @@ import android.content.Context
 import android.content.Intent
 import android.provider.Settings
 import android.widget.Toast
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -40,13 +37,11 @@ import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.DeleteSweep
-import androidx.compose.material.icons.filled.Dns
 import androidx.compose.material.icons.filled.Layers
 import androidx.compose.material.icons.filled.PowerSettingsNew
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.Tune
-import androidx.compose.material.icons.filled.VpnKey
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -61,15 +56,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontFamily
@@ -91,6 +84,11 @@ import com.example.ui.viewmodel.BatchPreset
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+
+// Pre-allocated reusable gradient brushes to avoid heap allocations per composition
+private val ActiveCardBrush = Brush.linearGradient(listOf(CyberCyan.copy(alpha = 0.6f), NeonGreen.copy(alpha = 0.4f)))
+private val InactiveCardBrush = Brush.linearGradient(listOf(DarkBorder, DarkBorder))
+private val AmberCyanBrush = Brush.horizontalGradient(listOf(AlertAmber, CyberCyan))
 
 @Composable
 fun DashboardScreen(
@@ -122,7 +120,7 @@ fun DashboardScreen(
     ) {
         // 1. Permission Setup Card if WRITE_SECURE_SETTINGS not yet granted
         if (!hasSecureSettingsPermission) {
-            item {
+            item(key = "setup_card") {
                 SecureSettingsSetupCard(
                     adbCommand = viewModel.getAdbCommand(),
                     onCopyCommand = {
@@ -154,7 +152,7 @@ fun DashboardScreen(
 
         // 2. Accessibility warning banner if not connected
         if (!isAccessibilityConnected) {
-            item {
+            item(key = "accessibility_banner") {
                 ServiceSetupBanner(
                     onEnableClicked = {
                         try {
@@ -169,14 +167,13 @@ fun DashboardScreen(
         }
 
         // 3. Hero Status Card (Modifies Android System Settings Directly)
-        item {
+        item(key = "hero_card") {
             HeroStatusCard(
                 isDnsActive = isDnsActive,
                 activeProfile = activeProfile,
                 systemDnsMode = currentSystemDnsMode,
                 systemSpecifier = currentSystemSpecifier,
                 triggerSource = triggerSource,
-                foregroundAppName = foregroundAppName,
                 hasPermission = hasSecureSettingsPermission,
                 onToggleClicked = { viewModel.toggleDns() },
                 onNavigateToSettings = onNavigateToSettings
@@ -184,17 +181,16 @@ fun DashboardScreen(
         }
 
         // 4. Quick Stats & Foreground App Card
-        item {
+        item(key = "foreground_card") {
             ForegroundAppCard(
                 foregroundAppName = foregroundAppName,
-                isAccessibilityConnected = isAccessibilityConnected,
                 rulesCount = allRules.size,
                 onManageRulesClicked = onNavigateToRules
             )
         }
 
         // 5. Quick Profile Carousel
-        item {
+        item(key = "quick_profiles_section") {
             QuickProfileSection(
                 profiles = allProfiles,
                 activeProfileId = activeProfile?.id,
@@ -205,7 +201,7 @@ fun DashboardScreen(
         }
 
         // 6. One-Tap Recommended Presets
-        item {
+        item(key = "presets_card") {
             BatchPresetsCard(
                 onApplyPreset = { preset -> viewModel.applyBatchPreset(preset) },
                 onNavigateToRules = onNavigateToRules
@@ -213,7 +209,7 @@ fun DashboardScreen(
         }
 
         // 7. Recent Rule Trigger Activity Feed
-        item {
+        item(key = "activity_logs_section") {
             ActivityLogSection(
                 logs = recentLogs,
                 onClearLogs = { viewModel.clearLogs() }
@@ -235,9 +231,7 @@ private fun SecureSettingsSetupCard(
             .testTag("secure_settings_setup_card"),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = DarkNavyCard),
-        border = CardDefaults.outlinedCardBorder().copy(
-            brush = Brush.horizontalGradient(listOf(AlertAmber, CyberCyan))
-        )
+        border = CardDefaults.outlinedCardBorder().copy(brush = AmberCyanBrush)
     ) {
         Column(
             modifier = Modifier
@@ -260,7 +254,7 @@ private fun SecureSettingsSetupCard(
                     )
                 }
                 Spacer(modifier = Modifier.width(10.dp))
-                Column {
+                Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = "System Private DNS Permission Needed",
                         style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
@@ -357,9 +351,7 @@ private fun ServiceSetupBanner(
             .testTag("service_setup_banner"),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
-        border = CardDefaults.outlinedCardBorder().copy(
-            brush = Brush.horizontalGradient(listOf(AlertAmber, CyberCyan))
-        )
+        border = CardDefaults.outlinedCardBorder().copy(brush = AmberCyanBrush)
     ) {
         Row(
             modifier = Modifier
@@ -417,11 +409,11 @@ private fun HeroStatusCard(
     systemDnsMode: String,
     systemSpecifier: String?,
     triggerSource: String,
-    foregroundAppName: String?,
     hasPermission: Boolean,
     onToggleClicked: () -> Unit,
     onNavigateToSettings: () -> Unit
 ) {
+    // Pulse animation: rendered with graphicsLayer to isolate drawing phase & prevent recomposition loops at 120Hz/144Hz
     val infiniteTransition = rememberInfiniteTransition(label = "pulse")
     val pulseScale by infiniteTransition.animateFloat(
         initialValue = 1f,
@@ -443,12 +435,7 @@ private fun HeroStatusCard(
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(containerColor = DarkNavyCard),
         border = CardDefaults.outlinedCardBorder().copy(
-            brush = Brush.linearGradient(
-                listOf(
-                    if (isDnsActive) CyberCyan.copy(alpha = 0.6f) else DarkBorder,
-                    if (isDnsActive) NeonGreen.copy(alpha = 0.4f) else DarkBorder
-                )
-            )
+            brush = if (isDnsActive) ActiveCardBrush else InactiveCardBrush
         )
     ) {
         Column(
@@ -489,7 +476,7 @@ private fun HeroStatusCard(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Big Power Toggle Button with pulse animation
+            // Big Power Toggle Button with hardware graphicsLayer pulse animation (zero recomposition overhead)
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier.size(130.dp)
@@ -498,7 +485,10 @@ private fun HeroStatusCard(
                     Box(
                         modifier = Modifier
                             .size(126.dp)
-                            .scale(pulseScale)
+                            .graphicsLayer {
+                                scaleX = pulseScale
+                                scaleY = pulseScale
+                            }
                             .clip(CircleShape)
                             .background(NeonGreen.copy(alpha = 0.12f))
                     )
@@ -552,7 +542,9 @@ private fun HeroStatusCard(
             Text(
                 text = activeHostname,
                 style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onBackground,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
 
             Spacer(modifier = Modifier.height(4.dp))
@@ -571,13 +563,14 @@ private fun HeroStatusCard(
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(16.dp))
                     .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
-                    .padding(vertical = 12.dp, horizontal = 16.dp),
+                    .padding(vertical = 12.dp, horizontal = 12.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 MetricItem(
                     label = "System Mode",
-                    value = systemDnsMode.uppercase()
+                    value = systemDnsMode.uppercase(),
+                    modifier = Modifier.weight(1f)
                 )
 
                 Box(
@@ -589,7 +582,8 @@ private fun HeroStatusCard(
 
                 MetricItem(
                     label = "DoT Hostname",
-                    value = (systemSpecifier ?: activeProfile?.dotHost ?: "None").take(15)
+                    value = (systemSpecifier ?: activeProfile?.dotHost ?: "None"),
+                    modifier = Modifier.weight(1.5f)
                 )
 
                 Box(
@@ -601,7 +595,8 @@ private fun HeroStatusCard(
 
                 MetricItem(
                     label = "Routing",
-                    value = "Android Native"
+                    value = "Android Native",
+                    modifier = Modifier.weight(1f)
                 )
             }
         }
@@ -609,17 +604,23 @@ private fun HeroStatusCard(
 }
 
 @Composable
-private fun MetricItem(label: String, value: String) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+private fun MetricItem(label: String, value: String, modifier: Modifier = Modifier) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.padding(horizontal = 4.dp)
+    ) {
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1
         )
         Text(
             text = value,
             style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }
@@ -627,7 +628,6 @@ private fun MetricItem(label: String, value: String) {
 @Composable
 private fun ForegroundAppCard(
     foregroundAppName: String?,
-    isAccessibilityConnected: Boolean,
     rulesCount: Int,
     onManageRulesClicked: () -> Unit
 ) {
@@ -1008,8 +1008,9 @@ private fun ActivityLogSection(
                         .fillMaxWidth()
                         .padding(horizontal = 14.dp, vertical = 8.dp)
                 ) {
-                    val timeFormat = SimpleDateFormat("h:mm a", Locale.getDefault())
+                    val timeFormat = remember { SimpleDateFormat("h:mm a", Locale.getDefault()) }
                     logs.take(6).forEachIndexed { index, log ->
+                        val formattedTime = remember(log.timestamp) { timeFormat.format(Date(log.timestamp)) }
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -1038,7 +1039,7 @@ private fun ActivityLogSection(
                                 )
                             }
                             Text(
-                                text = timeFormat.format(Date(log.timestamp)),
+                                text = formattedTime,
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
