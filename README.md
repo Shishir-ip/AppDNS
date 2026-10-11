@@ -11,6 +11,31 @@
 
 ---
 
+<div align="center">
+
+<!-- UPDATE THIS LINK FOR EACH NEW RELEASE -->
+<a href="https://github.com/Shishir-ip/AppDNS/releases/download/v2.0/AppDNSv2.apk">
+  <img src="https://img.shields.io/badge/Download_APK-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Download APK">
+</a>
+
+<p><sub>Android 9.0+ · Free · No VPN · Open source</sub></p>
+
+<p>
+  <strong>How to install:</strong><br>
+  1. Tap Download and open the APK. If Android asks, allow installing from this source.<br>
+  2. Do the one-time permission setup (<a href="#-1-minute-initial-setup">1-Minute Initial Setup</a>).<br>
+  3. Enable the Auto-Switch Accessibility Service in AppDNS Settings.
+</p>
+
+<p>
+  <sub>Other versions: <a href="https://github.com/Shishir-ip/AppDNS/releases">Releases page</a></sub><br>
+  <sub>Your browser may warn about APK files. This is normal for apps installed outside the Play Store.</sub>
+</p>
+
+</div>
+
+---
+
 ## 📱 Screenshots
 
 <div align="center">
