@@ -27,7 +27,7 @@
 ---
 
 ## 🔍 SEO & Discovery Keywords
-*Android private dns switcher, modify private dns settings per app, auto switch private dns android, no vpn dns switcher, adguard dns per app, cloudflare family dns switcher, nextdns android switcher, write secure settings private dns, dns-over-tls per app routing, quick settings private dns tile, event-driven private dns automation.*
+*Android private dns switcher, modify private dns settings per app, auto switch private dns android, no vpn dns switcher, adguard dns per app, cloudflare family dns switcher, nextdns android switcher, write secure settings private dns, dns-over-tls per app routing, quick settings private dns tile, event-driven private dns automation, appdns, appdns apk, appdns github, appdns apk github, appdns shishir-ip, private dns tiles, private dns quick settings tiles*
 
 ---
 
