@@ -11,6 +11,21 @@
 
 ---
 
+## 📱 Screenshots
+
+<div align="center">
+<table>
+  <tr>
+    <td align="center"><img src="https://i.ibb.co.com/dwLfynRQ/download.png" alt="AppDNS home screen showing Private DNS status" width="200"><br><sub>Home</sub></td>
+    <td align="center"><img src="https://i.ibb.co.com/4nkB6BHS/download-1.png" alt="AppDNS app rules screen for per-application DNS assignment" width="200"><br><sub>App Rules</sub></td>
+    <td align="center"><img src="https://i.ibb.co.com/QvzrXHSQ/screenshot-4.png" alt="AppDNS DNS library screen with preloaded DoT providers" width="200"><br><sub>DNS Library</sub></td>
+    <td align="center"><img src="https://i.ibb.co.com/Kck0ByXM/Screenshot-2026-10-11-09-42-18-33-8f6ea61bc9cfbd12f9269f7774568b53.jpg" alt="AppDNS settings screen with permissions and configuration" width="200"><br><sub>Settings</sub></td>
+  </tr>
+</table>
+</div>
+
+---
+
 ## 🔍 SEO & Discovery Keywords
 *Android private dns switcher, modify private dns settings per app, auto switch private dns android, no vpn dns switcher, adguard dns per app, cloudflare family dns switcher, nextdns android switcher, write secure settings private dns, dns-over-tls per app routing, quick settings private dns tile, event-driven private dns automation.*
 
