@@ -146,6 +146,8 @@ You can inspect the source code directly to verify all behavior:
    - Android's native Private DNS feature requires Android 9 (API 28) or higher and supports **DNS-over-TLS (DoT)** hostnames. It does not support raw DNS-over-HTTPS (DoH) URLs natively.
 3. **Device / OEM Behavior**:
    - Certain aggressive OEM skins (e.g. heavily customized battery savers) may delay accessibility callbacks or background execution. If you experience delays on a specific device model, please open a GitHub issue with your device model and Android version.
+4. **Short Delay When Opening an App**:
+   - When you open an app that has a DNS rule, the new DNS is applied after a short delay (a 350 ms debounce plus the time Android takes to apply the setting). During that moment, the app's first DNS lookups may still use the previous DNS. If the previous DNS wasn't filtering, a lookup to an ad or malware domain could slip through. AppDNS is not a security boundary. For strict blocking, set your filtering DNS as the default profile and use per-app rules only for apps that need a different DNS.
 
 ---
 
