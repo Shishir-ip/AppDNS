@@ -64,7 +64,7 @@ AppDNS lets you pick a **different Private DNS provider for each app**. Open you
 
 4. Go to **Apps**, tap any app, choose its DNS profile. Done.
 
-> **Oppo / OnePlus / Realme (ColorOS):** if the command fails with `SecurityException: Neither user 2000...`, enable **Developer options → "Disable permission monitoring"**, restart the phone, and run the command again.
+> **Oppo / OnePlus / Realme (ColorOS):** if the command fails with `SecurityException: Neither user 2000...`, enable **Developer options → "Disable permission monitoring" or "Disable system optimization" **, restart the phone, and run the command again.
 
 ## How it works
 
