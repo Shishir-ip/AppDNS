@@ -41,6 +41,7 @@ AppDNS lets you pick a **different Private DNS provider for each app**. Open you
 - ⬆️ **In-app updates** — check, download with live progress, and install new versions without leaving the app
 - 🔒 **Private by design** — no analytics, no tracking; the accessibility service reads only the foreground app's package name, never screen content
 
+
 ## Screenshots
 
 <div align="center">
