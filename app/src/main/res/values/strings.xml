@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AppDNS</string>
+    <string name="tile_label">AppDNS</string>
+    <string name="accessibility_description">AppDNS watches which app is in the foreground so it can switch Android\'s Private DNS automatically. It reads only the foreground app\'s package name — no screen content, no keystrokes, no network access.</string>
+</resources>
