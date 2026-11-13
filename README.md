@@ -45,10 +45,10 @@ AppDNS lets you pick a **different Private DNS provider for each app**. Open you
 ## Screenshots
 
 <div align="center">
-<img src="docs/screenshots/rule-sheet.png" width="230" alt="Assign a DNS profile to an app">
-<img src="docs/screenshots/dns-profiles.png" width="230" alt="DNS profiles — Cloudflare, AdGuard, Google, Quad9">
-<img src="docs/screenshots/setup.png" width="230" alt="AppDNS setup guide with ADB command">
-<img src="docs/screenshots/settings.png" width="230" alt="AppDNS settings — themes and behavior">
+<img src="docs/screenshots/rule-sheet.png" width="210" alt="Assign a DNS profile to an app">
+<img src="docs/screenshots/dns-profiles.png" width="210" alt="DNS profiles — Cloudflare, AdGuard, Google, Quad9">
+<img src="docs/screenshots/setup.png" width="210" alt="AppDNS setup guide with ADB command">
+<img src="docs/screenshots/settings.png" width="210" alt="AppDNS settings — themes and behavior">
 </div>
 
 ## Install & Setup (2 minutes)
