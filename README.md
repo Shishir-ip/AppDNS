@@ -21,7 +21,7 @@ Automatically changes Android's native Private DNS (DNS-over-TLS) when you open 
 <br><br>
 
 <img src="docs/screenshots/home-light.png" width="230" alt="AppDNS home screen — per-app private DNS status">
-<img src="docs/screenshots/home-dark.png" width="230" alt="AppDNS black theme — protected status">
+
 <img src="docs/screenshots/apps.png" width="230" alt="AppDNS app rules — assign DNS per application">
 
 </div>
