@@ -1,0 +1,14 @@
+{
+  "name": "AppDNS — Per-App Private DNS for Android",
+  "short_name": "AppDNS",
+  "description": "AppDNS automatically switches Android's Private DNS (DNS-over-TLS) per app. No root, no VPN. Free and open source.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "browser",
+  "background_color": "#ffffff",
+  "theme_color": "#0a0a0a",
+  "icons": [
+    { "src": "assets/favicon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/favicon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

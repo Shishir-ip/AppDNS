@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AppDNS — Per-App Private DNS Switcher for Android (No Root, No VPN)</title>
+<meta name="description" content="AppDNS auto-switches Android's Private DNS (DNS-over-TLS) per app — AdGuard, Cloudflare, NextDNS, Quad9. No root, no VPN, instant switching. Free & open source APK.">
+<meta name="keywords" content="appdns, appdns apk, appdns android, appdns v3, per app dns, per-app private dns, private dns per app android, dns switcher android, auto switch dns android, automatic dns changer, dns over tls app, dns-over-tls switcher, dot dns android, adguard dns per app, adguard private dns android, cloudflare dns android, nextdns android, quad9 android, google dns android, control d android, mullvad dns android, change private dns automatically, private dns automation, dns changer no root, no root dns app, write_secure_settings dns, adb private dns command, accessibility dns switcher, android dns app, per application dns, dns profiles android, app based dns, smart dns android, dns toggle app, private dns manager, dns privacy android, block ads dns android, encrypted dns android, shishir appdns, appdns github">
+<meta name="author" content="Shishir">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<meta name="rating" content="general">
+<link rel="canonical" href="https://shishir-ip.github.io/AppDNS/">
+<meta name="theme-color" content="#ffffff">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AppDNS">
+<meta property="og:title" content="AppDNS — Per-App Private DNS Switcher for Android">
+<meta property="og:description" content="Different Private DNS for every app. AdGuard when you browse, off when you leave. No root, no VPN, no battery drain. Free & open source.">
+<meta property="og:url" content="https://shishir-ip.github.io/AppDNS/">
+<meta property="og:image" content="https://shishir-ip.github.io/AppDNS/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="AppDNS — Per-App Private DNS for Android. No root, no VPN, free and open source.">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AppDNS — Per-App Private DNS Switcher for Android">
+<meta name="twitter:description" content="Auto-switch Android Private DNS (DNS-over-TLS) per app. AdGuard, Cloudflare, NextDNS, Quad9. No root, no VPN. Free & open source APK.">
+<meta name="twitter:image" content="https://shishir-ip.github.io/AppDNS/assets/og-image.png">
+<meta name="twitter:image:alt" content="AppDNS shield logo — per-app private DNS for Android">
+<meta name="application-name" content="AppDNS">
+<meta name="apple-mobile-web-app-title" content="AppDNS">
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" href="assets/favicon.ico" sizes="48x48">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="preload" as="image" href="screenshots/home-light.png" fetchpriority="high">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "AppDNS",
+  "alternateName": "AppDNS — Per-App Private DNS Switcher",
+  "url": "https://shishir-ip.github.io/AppDNS/",
+  "image": "https://shishir-ip.github.io/AppDNS/assets/og-image.png",
+  "description": "AppDNS automatically switches Android's native Private DNS (DNS-over-TLS) per app. Open an app and its DNS profile applies in under 10 ms; leave and DNS turns off. No root, no VPN, no battery drain. Free and open source.",
+  "operatingSystem": "Android 9.0 and up",
+  "applicationCategory": "UtilitiesApplication",
+  "applicationSubCategory": "DNS & Network Privacy",
+  "softwareVersion": "3.0",
+  "fileSize": "2.3MB",
+  "downloadUrl": "https://github.com/Shishir-ip/AppDNS/releases/latest/download/AppDNS.apk",
+  "installUrl": "https://github.com/Shishir-ip/AppDNS/releases/latest",
+  "screenshot": [
+    "https://shishir-ip.github.io/AppDNS/screenshots/home-light.png",
+    "https://shishir-ip.github.io/AppDNS/screenshots/home-dark.png",
+    "https://shishir-ip.github.io/AppDNS/screenshots/apps.png",
+    "https://shishir-ip.github.io/AppDNS/screenshots/rule-sheet.png",
+    "https://shishir-ip.github.io/AppDNS/screenshots/dns-profiles.png",
+    "https://shishir-ip.github.io/AppDNS/screenshots/setup.png",
+    "https://shishir-ip.github.io/AppDNS/screenshots/settings.png",
+    "https://shishir-ip.github.io/AppDNS/screenshots/updater.png"
+  ],
+  "featureList": "Per-app Private DNS rules, DNS-over-TLS profiles (AdGuard, Cloudflare, NextDNS, Quad9, Google, custom), instant event-driven switching, permission watchdog with reboot alerts, quick-settings tile, in-app updater, black & white themes, no internet permission",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
+  "author": { "@type": "Person", "name": "Shishir", "url": "https://github.com/Shishir-ip" },
+  "license": "https://www.apache.org/licenses/LICENSE-2.0",
+  "isAccessibleForFree": true,
+  "inLanguage": "en"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "AppDNS",
+  "url": "https://shishir-ip.github.io/AppDNS/",
+  "publisher": { "@type": "Person", "name": "Shishir", "url": "https://github.com/Shishir-ip" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "What is AppDNS?", "acceptedAnswer": { "@type": "Answer", "text": "AppDNS is a free, open-source Android app that automatically switches the system Private DNS (DNS-over-TLS) provider based on the app you are using. Open a configured app and its DNS profile applies instantly; leave it and DNS turns off or restores your default." } },
+    { "@type": "Question", "name": "Does AppDNS need root?", "acceptedAnswer": { "@type": "Answer", "text": "No. One ADB command grants WRITE_SECURE_SETTINGS once — no root and no unlocked bootloader. You can also run the command on-device with Shizuku or LADB over wireless debugging." } },
+    { "@type": "Question", "name": "Does AppDNS use a VPN?", "acceptedAnswer": { "@type": "Answer", "text": "No. AppDNS writes directly to Android's native Private DNS setting, so your VPN slot stays free. WireGuard, Tailscale and work VPNs keep working, and there is no always-on VPN notification." } },
+    { "@type": "Question", "name": "Which DNS providers does AppDNS support?", "acceptedAnswer": { "@type": "Answer", "text": "Any DNS-over-TLS hostname: AdGuard, Cloudflare, NextDNS, Quad9, Google, Control D, Mullvad, or your own server. Four profiles are built in and you can add unlimited custom profiles." } },
+    { "@type": "Question", "name": "How fast does AppDNS switch DNS?", "acceptedAnswer": { "@type": "Answer", "text": "Typically under 10 milliseconds after an app comes to the foreground. Rules live in memory and an accessibility window-change event triggers a single system write — no polling, no database, no debounce." } },
+    { "@type": "Question", "name": "Does AppDNS drain battery?", "acceptedAnswer": { "@type": "Answer", "text": "No. It is event-driven and idle between app switches. There is no background polling and no network traffic — the app does not even hold the INTERNET permission." } },
+    { "@type": "Question", "name": "What happens after a reboot?", "acceptedAnswer": { "@type": "Answer", "text": "Both permissions normally survive reboots. If your device ever disables the accessibility service or revokes the ADB grant, AppDNS's watchdog detects it and shows a notification plus a home-screen banner with a fix-it guide." } },
+    { "@type": "Question", "name": "Is the accessibility service safe? What can it see?", "acceptedAnswer": { "@type": "Answer", "text": "AppDNS reads only the foreground app's package name from window-change events. It never reads screen content, keystrokes or personal data, and it has no internet permission, so nothing can leave your device. The full source code is public on GitHub." } },
+    { "@type": "Question", "name": "Why does the ADB command fail on Oppo, OnePlus or Realme?", "acceptedAnswer": { "@type": "Answer", "text": "ColorOS blocks ADB permission grants with 'SecurityException: Neither user 2000...'. Enable Developer options, turn on 'Disable permission monitoring' (sign-in may be required), restart the phone and run the command again. The in-app setup guide walks you through it." } },
+    { "@type": "Question", "name": "Is AppDNS free and which Android versions are supported?", "acceptedAnswer": { "@type": "Answer", "text": "Completely free and open source under Apache 2.0 — no ads, no tracking. It works on Android 9 (Pie) and newer, including Android 15. The APK is about 2.3 MB and future versions install through the built-in updater." } }
+  ]
+}
+</script>
+<script>(function(){try{var t=localStorage.getItem('appdns-theme');if(!t)t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-shield" viewBox="0 0 108 108"><path fill="currentColor" fill-rule="evenodd" d="M54 26 L76 35.4 V51 C76 66.2 66.6 76.9 54 81.4 C41.4 76.9 32 66.2 32 51 V35.4 Z M54 44.5 a6.2 6.2 0 1 0 .01 0 Z M51.4 53 L56.6 53 L58.2 63 L49.8 63 Z"/></symbol>
+    <symbol id="i-github" viewBox="0 0 24 24"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0-4.5-4.5M12 15l4.5-4.5M4 20h16"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></g></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path fill="currentColor" d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/></g></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></g></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 20a2 2 0 0 0 4 0"/></g></symbol>
+    <symbol id="i-palette" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18c1.4 0 2-.9 2-2 0-1.2-.8-1.6-.8-2.6 0-1 .8-1.4 1.8-1.4H17a4 4 0 0 0 4-4c0-4.4-4-8-9-8z"/><circle cx="7.5" cy="11" r="1" fill="currentColor"/><circle cx="10.5" cy="7" r="1" fill="currentColor"/><circle cx="15" cy="7.5" r="1" fill="currentColor"/></g></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></g></symbol>
+    <symbol id="i-eyeoff" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18"/><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/><path d="M9.9 4.24A9.5 9.5 0 0 1 12 4c7 0 10 8 10 8a13.4 13.4 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.5 13.5 0 0 0 2 12s3 8 10 8a9.7 9.7 0 0 0 5.39-1.61"/></g></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18z"/></g></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="3.5"/><path d="M10 13 21 2m-4 2 3 3"/></g></symbol>
+    <symbol id="i-tile" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></g></symbol>
+    <symbol id="i-shieldcheck" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6z"/><path d="M9 12l2 2 4-4"/></g></symbol>
+  </defs>
+</svg>
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="#top" aria-label="AppDNS — back to top">
+      <svg class="brand-mark" aria-hidden="true"><use href="#i-shield"/></svg>
+      <span class="brand-name">AppDNS</span>
+    </a>
+    <nav class="nav-links" id="navLinks" aria-label="Primary">
+      <a href="#features">Features</a>
+      <a href="#screenshots">Screenshots</a>
+      <a href="#how">How it works</a>
+      <a href="#setup">Setup</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch between black and white theme">
+        <svg class="ic-sun" aria-hidden="true"><use href="#i-sun"/></svg>
+        <svg class="ic-moon" aria-hidden="true"><use href="#i-moon"/></svg>
+      </button>
+      <a class="btn btn-primary btn-sm nav-dl" href="https://github.com/Shishir-ip/AppDNS/releases/latest/download/AppDNS.apk">
+        <svg aria-hidden="true"><use href="#i-download"/></svg><span>Download</span>
+      </a>
+      <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+        <svg class="ic-menu" aria-hidden="true"><use href="#i-menu"/></svg>
+        <svg class="ic-x" aria-hidden="true"><use href="#i-x"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+<main id="main">
+<section class="hero" id="top">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow reveal"><span class="pulse-dot" aria-hidden="true"></span>Free · Open source · Android 9+</p>
+      <h1 class="reveal d1">Per-app <span class="h1-mark">Private&nbsp;DNS</span> for Android.</h1>
+      <p class="lead reveal d2">AppDNS switches Android's native DNS-over-TLS the moment you open an app — AdGuard for your browser, Quad9 for banking — and turns it off when you leave. <strong>No root. No VPN. No battery drain.</strong></p>
+      <div class="hero-cta reveal d3">
+        <a class="btn btn-primary btn-lg" href="https://github.com/Shishir-ip/AppDNS/releases/latest/download/AppDNS.apk">
+          <svg aria-hidden="true"><use href="#i-download"/></svg>
+          Download APK <span class="ver-pill" data-version>v3.0</span>
+        </a>
+        <a class="btn btn-ghost btn-lg" href="https://github.com/Shishir-ip/AppDNS" target="_blank" rel="noopener">
+          <svg aria-hidden="true"><use href="#i-github"/></svg>
+          View source
+        </a>
+      </div>
+      <ul class="hero-stats reveal d4">
+        <li><strong>&lt;10&nbsp;ms</strong><span>DNS switch time</span></li>
+        <li><strong>2.3&nbsp;MB</strong><span>tiny APK</span></li>
+        <li><strong>0</strong><span>ads · trackers</span></li>
+      </ul>
+    </div>
+    <div class="hero-visual reveal d2">
+      <div class="radar" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="phone-tilt" id="heroTilt">
+        <div class="phone phone-hero float-anim">
+          <div class="phone-notch" aria-hidden="true"></div>
+          <img id="heroShot" src="screenshots/home-light.png" alt="AppDNS home screen — live shield status showing per-app private DNS protection is active" width="1080" height="2400" fetchpriority="high">
+        </div>
+      </div>
+      <div class="hero-chip chip-a float-anim" aria-hidden="true">
+        <svg><use href="#i-shieldcheck"/></svg>
+        <div><b>AdGuard DNS</b><span>active · browser</span></div>
+      </div>
+      <div class="hero-chip chip-b float-anim" aria-hidden="true">
+        <svg><use href="#i-bolt"/></svg>
+        <div><b>Switched in 8&nbsp;ms</b><span>Chrome → DNS on</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="marquee" aria-label="Works with every DNS-over-TLS provider">
+  <div class="marquee-track">
+    <div class="marquee-group">
+      <span>AdGuard DNS</span><svg aria-hidden="true"><use href="#i-shield"/></svg>
+      <span>Cloudflare</span><svg aria-hidden="true"><use href="#i-shield"/></svg>
+      <span>NextDNS</span><svg aria-hidden="true"><use href="#i-shield"/></svg>
+      <span>Quad9</span><svg aria-hidden="true"><use href="#i-shield"/></svg>
+      <span>Google Public DNS</span><svg aria-hidden="true"><use href="#i-shield"/></svg>
+      <span>Control&nbsp;D</span><svg aria-hidden="true"><use href="#i-shield"/></svg>
+      <span>Mullvad DNS</span><svg aria-hidden="true"><use href="#i-shield"/></svg>
+      <span>Any custom DoT hostname</span><svg aria-hidden="true"><use href="#i-shield"/></svg>
+    </div>
+    <div class="marquee-group" aria-hidden="true">
+      <span>AdGuard DNS</span><svg><use href="#i-shield"/></svg>
+      <span>Cloudflare</span><svg><use href="#i-shield"/></svg>
+      <span>NextDNS</span><svg><use href="#i-shield"/></svg>
+      <span>Quad9</span><svg><use href="#i-shield"/></svg>
+      <span>Google Public DNS</span><svg><use href="#i-shield"/></svg>
+      <span>Control&nbsp;D</span><svg><use href="#i-shield"/></svg>
+      <span>Mullvad DNS</span><svg><use href="#i-shield"/></svg>
+      <span>Any custom DoT hostname</span><svg><use href="#i-shield"/></svg>
+    </div>
+  </div>
+</div>
+<section class="section" id="features">
+  <div class="container">
+    <header class="sec-head reveal">
+      <p class="kicker">Why AppDNS</p>
+      <h2>Everything you need.<br>Nothing you don't.</h2>
+      <p class="sec-sub">A complete rebuild of per-app DNS on Android — faster, calmer, and honest about what it does.</p>
+    </header>
+    <div class="feat-grid">
+      <article class="feat-card reveal">
+        <div class="feat-ic"><svg aria-hidden="true"><use href="#i-bolt"/></svg></div>
+        <h3>Instant switching</h3>
+        <p>Under 10&nbsp;ms from app launch to DNS change. An event-driven engine with zero polling, zero debounce and zero database hops.</p>
+      </article>
+      <article class="feat-card reveal d1">
+        <div class="feat-ic"><svg aria-hidden="true"><use href="#i-target"/></svg></div>
+        <h3>Per-app rules</h3>
+        <p>Give every app its own DNS profile. Search the app list, filter user / system / configured apps, and toggle rules individually.</p>
+      </article>
+      <article class="feat-card reveal d2">
+        <div class="feat-ic"><svg aria-hidden="true"><use href="#i-lock"/></svg></div>
+        <h3>No root, no VPN</h3>
+        <p>One ADB grant, then AppDNS writes Android's own Private DNS setting. Your VPN slot stays free for WireGuard, Tailscale or work VPNs.</p>
+      </article>
+      <article class="feat-card reveal">
+        <div class="feat-ic"><svg aria-hidden="true"><use href="#i-bell"/></svg></div>
+        <h3>Permission watchdog</h3>
+        <p>Reboot-safe. If accessibility or the ADB grant is ever disabled, a notification and a home-screen banner show you exactly how to fix it.</p>
+      </article>
+      <article class="feat-card reveal d1">
+        <div class="feat-ic"><svg aria-hidden="true"><use href="#i-palette"/></svg></div>
+        <h3>Black &amp; white design</h3>
+        <p>Two pure themes, spring-physics toggles, rubber-band scrolling, staggered animations and haptic ticks. Feels like a flagship app.</p>
+      </article>
+      <article class="feat-card reveal d2">
+        <div class="feat-ic"><svg aria-hidden="true"><use href="#i-refresh"/></svg></div>
+        <h3>In-app updater</h3>
+        <p>Check for updates, read the changelog, download with live percentage and install — all without leaving AppDNS.</p>
+      </article>
+      <article class="feat-card reveal">
+        <div class="feat-ic"><svg aria-hidden="true"><use href="#i-eyeoff"/></svg></div>
+        <h3>Private by design</h3>
+        <p>No INTERNET permission, no analytics, no ads. The accessibility service reads only the foreground app's package name — never screen content.</p>
+      </article>
+      <article class="feat-card reveal d1">
+        <div class="feat-ic"><svg aria-hidden="true"><use href="#i-globe"/></svg></div>
+        <h3>Any DoT provider</h3>
+        <p>AdGuard, Cloudflare, NextDNS, Quad9 and Google built in — plus unlimited custom DNS-over-TLS hostnames like Control&nbsp;D or Mullvad.</p>
+      </article>
+      <article class="feat-card reveal d2">
+        <div class="feat-ic"><svg aria-hidden="true"><use href="#i-tile"/></svg></div>
+        <h3>Quick-settings tile</h3>
+        <p>A shield tile in your notification shade pauses or resumes protection with one tap. Smart exit behavior: off, restore default, or keep.</p>
+      </article>
+    </div>
+  </div>
+</section>
+<section class="section section-alt" id="how">
+  <div class="container">
+    <header class="sec-head reveal">
+      <p class="kicker">How it works</p>
+      <h2>One system setting.<br>Four tiny steps.</h2>
+      <p class="sec-sub">AppDNS uses Android's built-in Private DNS — the same toggle in Settings&nbsp;→&nbsp;Network. It just flips it for you, at the right moment.</p>
+    </header>
+    <ol class="steps">
+      <li class="step reveal">
+        <span class="step-num">1</span>
+        <h3>You open an app</h3>
+        <p>Android fires a window-change event. AppDNS sees only the package name — nothing else.</p>
+      </li>
+      <li class="step reveal d1">
+        <span class="step-num">2</span>
+        <h3>Rule match in memory</h3>
+        <p>A single in-memory lookup finds the app's DNS profile. No database, no waiting.</p>
+      </li>
+      <li class="step reveal d2">
+        <span class="step-num">3</span>
+        <h3>Private DNS is written</h3>
+        <p>One <code>Settings.Global</code> write sets the provider and mode. Android handles the encrypted DNS-over-TLS connection.</p>
+      </li>
+      <li class="step reveal d3">
+        <span class="step-num">4</span>
+        <h3>You leave → exit behavior</h3>
+        <p>DNS turns off, restores your default profile, or stays — whichever you chose in Settings.</p>
+      </li>
+    </ol>
+    <p class="note reveal"><svg aria-hidden="true"><use href="#i-shieldcheck"/></svg>While a protected app is in front, the whole device uses that DNS provider — background apps included. AppDNS is a privacy convenience, not a security boundary.</p>
+  </div>
+</section>
+<section class="section" id="screenshots">
+  <div class="container">
+    <header class="sec-head reveal">
+      <p class="kicker">Screenshots</p>
+      <h2>See it in action.</h2>
+      <p class="sec-sub">Real screens from AppDNS v3.0 — swipe, tap the tabs, or use arrow keys.</p>
+    </header>
+    <div class="shots-stage reveal">
+      <button class="shot-arrow" id="shotPrev" type="button" aria-label="Previous screenshot"><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
+      <div class="phone phone-shot" id="shotPhone">
+        <div class="phone-notch" aria-hidden="true"></div>
+        <div class="shot-stack" id="shotStack">
+          <img class="shot active" src="screenshots/home-light.png" alt="AppDNS home screen in white theme — live shield status, master protection switch, current app and DNS readout" width="1080" height="2400" loading="lazy" data-title="Home — live protection" data-desc="Breathing shield, master switch, current app + DNS readout and a session switch counter.">
+          <img class="shot" src="screenshots/home-dark.png" alt="AppDNS home screen in pure black theme — per-app private DNS status on OLED black" width="1080" height="2400" loading="lazy" data-title="Pure black theme" data-desc="OLED-friendly black theme. Follow the system or pick White / Black manually.">
+          <img class="shot" src="screenshots/apps.png" alt="AppDNS per-app rules list — searchable Android app list with DNS profile assignments" width="1080" height="2400" loading="lazy" data-title="Per-app rules" data-desc="Searchable app list with user / system / configured filters and per-rule toggles.">
+          <img class="shot" src="screenshots/rule-sheet.png" alt="AppDNS bottom sheet — assign a DNS-over-TLS profile to a specific Android app" width="1080" height="2400" loading="lazy" data-title="Assign a profile" data-desc="Tap any app, pick its DNS in a smooth bottom sheet, enable or disable the rule.">
+          <img class="shot" src="screenshots/dns-profiles.png" alt="AppDNS DNS profiles — Cloudflare, AdGuard, Google, Quad9 and custom DNS-over-TLS hostnames" width="1080" height="2400" loading="lazy" data-title="DNS profiles" data-desc="Cloudflare, AdGuard, Google and Quad9 built in — add unlimited custom DoT hostnames.">
+          <img class="shot" src="screenshots/setup.png" alt="AppDNS setup guide — accessibility step, one-tap ADB command copy and ColorOS fix note" width="1080" height="2400" loading="lazy" data-title="Guided setup" data-desc="Live step status, one-tap copy of the ADB command, and the ColorOS fix note.">
+          <img class="shot" src="screenshots/settings.png" alt="AppDNS settings — black and white themes, exit behavior, haptics and in-app update check" width="1080" height="2400" loading="lazy" data-title="Settings" data-desc="Theme, exit behavior, haptics, switch notifications, battery shortcut and credits.">
+          <img class="shot" src="screenshots/updater.png" alt="AppDNS in-app updater — changelog popup and APK download with live percentage" width="1080" height="2400" loading="lazy" data-title="In-app updates" data-desc="Changelog popup, download with live percentage, then an Install button.">
+        </div>
+      </div>
+      <button class="shot-arrow" id="shotNext" type="button" aria-label="Next screenshot"><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
+    </div>
+    <div class="shots-caption reveal">
+      <h3 id="shotTitle">Home — live protection</h3>
+      <p id="shotDesc">Breathing shield, master switch, current app + DNS readout and a session switch counter.</p>
+    </div>
+    <div class="shots-tabs reveal" id="shotTabs" role="tablist" aria-label="Choose a screenshot">
+      <button role="tab" aria-selected="true" type="button">Home</button>
+      <button role="tab" aria-selected="false" type="button">Black theme</button>
+      <button role="tab" aria-selected="false" type="button">Apps</button>
+      <button role="tab" aria-selected="false" type="button">Rule sheet</button>
+      <button role="tab" aria-selected="false" type="button">DNS profiles</button>
+      <button role="tab" aria-selected="false" type="button">Setup</button>
+      <button role="tab" aria-selected="false" type="button">Settings</button>
+      <button role="tab" aria-selected="false" type="button">Updater</button>
+    </div>
+  </div>
+</section>
+<section class="section section-alt" id="setup">
+  <div class="container">
+    <header class="sec-head reveal">
+      <p class="kicker">Setup</p>
+      <h2>Running in two minutes.</h2>
+      <p class="sec-sub">No root, no unlocked bootloader. One accessibility toggle and one ADB command — the in-app guide tracks every step live.</p>
+    </header>
+    <div class="setup-grid">
+      <article class="setup-card reveal">
+        <span class="step-num">1</span>
+        <h3>Install the APK</h3>
+        <p>Download <b data-version>v3.0</b> (~2.3&nbsp;MB) and allow “install unknown apps” if asked. Upgrading from v2? Uninstall the old app first — it used a different signature.</p>
+        <a class="btn btn-primary" href="https://github.com/Shishir-ip/AppDNS/releases/latest/download/AppDNS.apk"><svg aria-hidden="true"><use href="#i-download"/></svg>Download AppDNS.apk</a>
+      </article>
+      <article class="setup-card reveal d1">
+        <span class="step-num">2</span>
+        <h3>Enable the app watcher</h3>
+        <p>Open AppDNS → <b>Setup guide</b> → <i>Open Accessibility settings</i> → find <b>AppDNS</b> → turn it on. This is how AppDNS knows which app is in front.</p>
+        <p class="mini">Reads only the foreground package name. Never screen content.</p>
+      </article>
+      <article class="setup-card reveal d2">
+        <span class="step-num">3</span>
+        <h3>Grant DNS permission — once</h3>
+        <p>Enable USB debugging, connect to a PC with platform-tools, and run:</p>
+        <div class="code-block">
+          <code id="adbCmd">adb shell pm grant com.shishir.appdns android.permission.WRITE_SECURE_SETTINGS</code>
+          <button class="copy-btn" id="copyAdb" type="button" aria-label="Copy ADB command">
+            <svg class="ic-copy" aria-hidden="true"><use href="#i-copy"/></svg>
+            <svg class="ic-check" aria-hidden="true"><use href="#i-check"/></svg>
+            <span>Copy</span>
+          </button>
+        </div>
+        <p class="mini">No PC? Run the same command on-device with <b>LADB</b> or <b>Shizuku</b> over wireless debugging.</p>
+      </article>
+    </div>
+    <div class="callout reveal">
+      <svg aria-hidden="true"><use href="#i-key"/></svg>
+      <div>
+        <h3>Oppo / OnePlus / Realme (ColorOS) — including Find X9 series</h3>
+        <p>If the command fails with <code>SecurityException: Neither user 2000…</code>, ColorOS is blocking ADB grants:</p>
+        <ol>
+          <li>Settings → About device → tap <b>Version number</b> 7 times to unlock Developer options.</li>
+          <li>Developer options → enable <b>“Disable permission monitoring”</b> (sign in to your Oppo/HeyTap account if asked).</li>
+          <li><b>Restart the phone</b>, reconnect USB and run the command again.</li>
+        </ol>
+      </div>
+    </div>
+    <p class="note reveal"><svg aria-hidden="true"><use href="#i-bell"/></svg>Optional but recommended: allow notifications (permission alerts) and set battery to <b>Unrestricted</b> so switching stays instant after long idle. Then open <b>Apps</b>, tap any app, pick its DNS profile — done.</p>
+  </div>
+</section>
+<section class="section" id="compare">
+  <div class="container">
+    <header class="sec-head reveal">
+      <p class="kicker">Comparison</p>
+      <h2>Why not a VPN app<br>or the settings toggle?</h2>
+    </header>
+    <div class="table-wrap reveal">
+      <table class="compare">
+        <thead>
+          <tr><th scope="col">&nbsp;</th><th scope="col" class="hl">AppDNS</th><th scope="col">VPN-based DNS apps</th><th scope="col">Manual Private DNS</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Per-app automation</th><td class="hl"><svg class="yes" aria-label="Yes"><use href="#i-check"/></svg></td><td><svg class="no" aria-label="No"><use href="#i-x"/></svg></td><td><svg class="no" aria-label="No"><use href="#i-x"/></svg></td></tr>
+          <tr><th scope="row">Uses your VPN slot</th><td class="hl">No</td><td>Yes — always-on</td><td>No</td></tr>
+          <tr><th scope="row">Root required</th><td class="hl">No</td><td>No</td><td>No</td></tr>
+          <tr><th scope="row">Battery impact</th><td class="hl">Near zero (event-driven)</td><td>Constant VPN service</td><td>None</td></tr>
+          <tr><th scope="row">Switch speed</th><td class="hl">&lt;10 ms, automatic</td><td>Varies by tunnel</td><td>Manual, every time</td></tr>
+          <tr><th scope="row">Reboot / permission alerts</th><td class="hl"><svg class="yes" aria-label="Yes"><use href="#i-check"/></svg></td><td>Varies</td><td><svg class="no" aria-label="No"><use href="#i-x"/></svg></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+<section class="section section-alt" id="faq">
+  <div class="container container-narrow">
+    <header class="sec-head reveal">
+      <p class="kicker">FAQ</p>
+      <h2>Questions, answered.</h2>
+    </header>
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <button class="faq-q" type="button" aria-expanded="false"><span>What is AppDNS?</span><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="faq-a"><div><p>AppDNS is a free, open-source Android app that automatically switches the system <b>Private DNS (DNS-over-TLS)</b> provider based on the app you're using. Open a configured app and its DNS profile applies instantly; leave it and DNS turns off or restores your default.</p></div></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q" type="button" aria-expanded="false"><span>Does AppDNS need root?</span><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="faq-a"><div><p>No. One ADB command grants <code>WRITE_SECURE_SETTINGS</code> once — no root, no unlocked bootloader. You can also run the command on-device with <b>Shizuku</b> or <b>LADB</b> over wireless debugging.</p></div></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q" type="button" aria-expanded="false"><span>Does it use a VPN? Will my VPN still work?</span><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="faq-a"><div><p>No VPN at all. AppDNS writes directly to Android's native Private DNS setting, so your VPN slot stays free — WireGuard, Tailscale and work VPNs keep working, and there's no always-on VPN notification.</p></div></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q" type="button" aria-expanded="false"><span>Which DNS providers are supported?</span><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="faq-a"><div><p>Any <b>DNS-over-TLS</b> hostname: AdGuard, Cloudflare, NextDNS (<code>&lt;id&gt;.dns.nextdns.io</code>), Quad9, Google, Control&nbsp;D, Mullvad — or your own server. Four profiles are built in and you can add unlimited custom ones.</p></div></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q" type="button" aria-expanded="false"><span>How fast does the DNS actually switch?</span><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="faq-a"><div><p>Typically <b>under 10 milliseconds</b> after an app comes to the foreground. Rules live in memory and an accessibility window-change event triggers a single system write — no polling, no database, no debounce (that was the v2 problem).</p></div></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q" type="button" aria-expanded="false"><span>Does it drain battery?</span><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="faq-a"><div><p>No. AppDNS is event-driven and idle between app switches. There's no background polling and no network traffic — the app doesn't even hold the <code>INTERNET</code> permission.</p></div></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q" type="button" aria-expanded="false"><span>What happens after a reboot?</span><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="faq-a"><div><p>Both permissions normally survive reboots. If your device ever disables the accessibility service or revokes the ADB grant, the <b>permission watchdog</b> detects it on boot, screen-on and every 30 minutes — then shows a notification and a home-screen banner with a fix-it guide.</p></div></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q" type="button" aria-expanded="false"><span>Is the accessibility service safe? What can it see?</span><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="faq-a"><div><p>AppDNS reads <b>only the foreground app's package name</b> from window-change events. It never reads screen content, keystrokes or personal data, and it has no internet permission, so nothing can leave your device. The full source code is public on GitHub.</p></div></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q" type="button" aria-expanded="false"><span>Why does the ADB command fail on Oppo / OnePlus / Realme?</span><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="faq-a"><div><p>ColorOS blocks ADB permission grants with <code>SecurityException: Neither user 2000…</code>. Enable Developer options → turn on <b>“Disable permission monitoring”</b> (sign-in may be required), restart the phone and run the command again. The in-app setup guide walks you through it.</p></div></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q" type="button" aria-expanded="false"><span>Is it free? Which Android versions work?</span><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="faq-a"><div><p>Completely free and open source under <b>Apache 2.0</b> — no ads, no tracking. Works on <b>Android 9 (Pie) and newer</b>, including Android 15. The APK is ~2.3&nbsp;MB and future versions install through the built-in updater.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="cta" id="download">
+  <div class="container cta-inner reveal">
+    <svg class="cta-shield" aria-hidden="true"><use href="#i-shield"/></svg>
+    <h2>Your apps. Your DNS.<br>Automatically.</h2>
+    <p>Free forever · Apache 2.0 · no ads, no tracking, no internet permission.</p>
+    <div class="hero-cta">
+      <a class="btn btn-invert btn-lg" href="https://github.com/Shishir-ip/AppDNS/releases/latest/download/AppDNS.apk">
+        <svg aria-hidden="true"><use href="#i-download"/></svg>
+        Download AppDNS <span class="ver-pill" data-version>v3.0</span>
+      </a>
+      <a class="btn btn-invert-ghost btn-lg" href="https://github.com/Shishir-ip/AppDNS" target="_blank" rel="noopener">
+        <svg aria-hidden="true"><use href="#i-github"/></svg>
+        Star on GitHub
+      </a>
+    </div>
+    <p class="cta-mini">Android 9+ · ~2.3 MB · <a href="https://github.com/Shishir-ip/AppDNS/releases/latest" target="_blank" rel="noopener">all releases</a></p>
+  </div>
+</section>
+</main>
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="#top"><svg class="brand-mark" aria-hidden="true"><use href="#i-shield"/></svg><span class="brand-name">AppDNS</span></a>
+        <p>Per-app Private DNS switcher for Android. No root, no VPN — just Android's own DNS-over-TLS, exactly when you need it.</p>
+        <p class="credit">Designed &amp; built by <a href="https://github.com/Shishir-ip" target="_blank" rel="noopener">Shishir</a></p>
+      </div>
+      <nav class="footer-col" aria-label="Product">
+        <h3>Product</h3>
+        <a href="#features">Features</a>
+        <a href="#screenshots">Screenshots</a>
+        <a href="#how">How it works</a>
+        <a href="#setup">Setup guide</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <nav class="footer-col" aria-label="Resources">
+        <h3>Resources</h3>
+        <a href="https://github.com/Shishir-ip/AppDNS" target="_blank" rel="noopener">GitHub repository</a>
+        <a href="https://github.com/Shishir-ip/AppDNS/releases/latest" target="_blank" rel="noopener">Latest release</a>
+        <a href="https://github.com/Shishir-ip/AppDNS/releases/latest/download/AppDNS.apk">Download APK</a>
+        <a href="https://github.com/Shishir-ip/AppDNS/issues" target="_blank" rel="noopener">Report an issue</a>
+        <a href="https://github.com/Shishir-ip/AppDNS/blob/main/LICENSE" target="_blank" rel="noopener">Apache 2.0 license</a>
+      </nav>
+    </div>
+    <div class="footer-tags" aria-label="Related searches">
+      <h3>Related searches</h3>
+      <p class="tag-cloud">
+        <span>per-app private DNS</span><span>DNS switcher for Android</span><span>auto switch DNS when app opens</span><span>AdGuard DNS per app</span><span>Cloudflare DNS Android</span><span>NextDNS Android app</span><span>Quad9 private DNS</span><span>DNS-over-TLS switcher</span><span>change private DNS with ADB</span><span>WRITE_SECURE_SETTINGS DNS</span><span>no-root DNS changer</span><span>DNS changer without VPN</span><span>private DNS automation</span><span>block ads with DNS Android</span><span>encrypted DNS Android app</span><span>per-application DNS profiles</span><span>AppDNS APK download</span><span>AppDNS v3</span><span>Shizuku DNS app</span><span>LADB private DNS</span><span>ColorOS ADB grant fix</span><span>Android 15 private DNS</span>
+      </p>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span id="year">2026</span> Shishir · AppDNS · Apache License 2.0</p>
+      <p class="legal">Android is a trademark of Google LLC. AppDNS is an independent open-source project, not affiliated with Google or any DNS provider.</p>
+    </div>
+  </div>
+</footer>
+<script src="assets/app.js" defer></script>
+</body>
+</html>
