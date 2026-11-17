@@ -9,6 +9,7 @@ Automatically changes Android's native Private DNS (DNS-over-TLS) when you open 
 [![Release](https://img.shields.io/github/v/release/Shishir-ip/AppDNS?style=flat-square&label=download&color=black)](https://github.com/Shishir-ip/AppDNS/releases/latest)
 [![Android](https://img.shields.io/badge/Android-9%2B-black?style=flat-square&logo=android)](https://github.com/Shishir-ip/AppDNS)
 [![License](https://img.shields.io/badge/license-Apache%202.0-black?style=flat-square)](LICENSE)
+[![Website](https://img.shields.io/badge/Website-AppDNS-black?style=flat-square&logo=githubpages&logoColor=white)](https://shishir-ip.github.io/AppDNS/)
 
 <br>
 
@@ -94,7 +95,7 @@ gradle :app:assembleRelease
 
 ## Credits
 
-Designed & built by **Shishir** · [GitHub](https://github.com/Shishir-ip)
+Designed & built by **Shishir** · [GitHub](https://github.com/Shishir-ip) · [Website](https://shishir-ip.github.io/AppDNS/)
 
 Licensed under the [Apache License 2.0](LICENSE).
 
