@@ -65,7 +65,7 @@
     "https://shishir-ip.github.io/AppDNS/screenshots/settings.png",
     "https://shishir-ip.github.io/AppDNS/screenshots/updater.png"
   ],
-  "featureList": "Per-app Private DNS rules, DNS-over-TLS profiles (AdGuard, Cloudflare, NextDNS, Quad9, Google, custom), instant event-driven switching, permission watchdog with reboot alerts, quick-settings tile, in-app updater, black & white themes, no internet permission",
+  "featureList": "Per-app Private DNS rules, DNS-over-TLS profiles (AdGuard, Cloudflare, NextDNS, Quad9, Google, custom), instant event-driven switching, permission watchdog with reboot alerts, quick-settings tile, in-app updater (updater-only internet access), black & white themes, no ads or analytics",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
   "author": { "@type": "Person", "name": "Shishir", "url": "https://github.com/Shishir-ip" },
   "license": "https://www.apache.org/licenses/LICENSE-2.0",
@@ -92,10 +92,11 @@
     { "@type": "Question", "name": "Does AppDNS use a VPN?", "acceptedAnswer": { "@type": "Answer", "text": "No. AppDNS writes directly to Android's native Private DNS setting, so your VPN slot stays free. WireGuard, Tailscale and work VPNs keep working, and there is no always-on VPN notification." } },
     { "@type": "Question", "name": "Which DNS providers does AppDNS support?", "acceptedAnswer": { "@type": "Answer", "text": "Any DNS-over-TLS hostname: AdGuard, Cloudflare, NextDNS, Quad9, Google, Control D, Mullvad, or your own server. Four profiles are built in and you can add unlimited custom profiles." } },
     { "@type": "Question", "name": "How fast does AppDNS switch DNS?", "acceptedAnswer": { "@type": "Answer", "text": "Typically under 10 milliseconds after an app comes to the foreground. Rules live in memory and an accessibility window-change event triggers a single system write — no polling, no database, no debounce." } },
-    { "@type": "Question", "name": "Does AppDNS drain battery?", "acceptedAnswer": { "@type": "Answer", "text": "No. It is event-driven and idle between app switches. There is no background polling and no network traffic — the app does not even hold the INTERNET permission." } },
+    { "@type": "Question", "name": "Does AppDNS drain battery?", "acceptedAnswer": { "@type": "Answer", "text": "No. It is event-driven and idle between app switches, with no background polling or network traffic. The only internet use is the optional update check triggered manually in Settings." } },
     { "@type": "Question", "name": "What happens after a reboot?", "acceptedAnswer": { "@type": "Answer", "text": "Both permissions normally survive reboots. If your device ever disables the accessibility service or revokes the ADB grant, AppDNS's watchdog detects it and shows a notification plus a home-screen banner with a fix-it guide." } },
-    { "@type": "Question", "name": "Is the accessibility service safe? What can it see?", "acceptedAnswer": { "@type": "Answer", "text": "AppDNS reads only the foreground app's package name from window-change events. It never reads screen content, keystrokes or personal data, and it has no internet permission, so nothing can leave your device. The full source code is public on GitHub." } },
+    { "@type": "Question", "name": "Is the accessibility service safe? What can it see?", "acceptedAnswer": { "@type": "Answer", "text": "AppDNS reads only the foreground app's package name from window-change events. It never reads screen content, keystrokes or personal data. There are no ads or analytics; the only network use is the optional in-app updater downloading releases from GitHub. The full source code is public on GitHub." } },
     { "@type": "Question", "name": "Why does the ADB command fail on Oppo, OnePlus or Realme?", "acceptedAnswer": { "@type": "Answer", "text": "ColorOS blocks ADB permission grants with 'SecurityException: Neither user 2000...'. Enable Developer options, turn on 'Disable permission monitoring' (sign-in may be required), restart the phone and run the command again. The in-app setup guide walks you through it." } },
+    { "@type": "Question", "name": "Why does Play Protect block the AppDNS APK?", "acceptedAnswer": { "@type": "Answer", "text": "Google automatically blocks sideloaded apps that declare an accessibility service in select markets — a blanket policy, not a malware detection. AppDNS is open source; install via ADB (adb install -r AppDNS.apk) to bypass the install dialog. On work profiles, install into the work user with adb install -r --user <workUserId> AppDNS.apk. A Play Protect appeal is in progress and a Play Store listing is planned." } },
     { "@type": "Question", "name": "Is AppDNS free and which Android versions are supported?", "acceptedAnswer": { "@type": "Answer", "text": "Completely free and open source under Apache 2.0 — no ads, no tracking. It works on Android 9 (Pie) and newer, including Android 15. The APK is about 2.3 MB and future versions install through the built-in updater." } }
   ]
 }
@@ -266,7 +267,7 @@
       <article class="feat-card reveal">
         <div class="feat-ic"><svg aria-hidden="true"><use href="#i-eyeoff"/></svg></div>
         <h3>Private by design</h3>
-        <p>No INTERNET permission, no analytics, no ads. The accessibility service reads only the foreground app's package name — never screen content.</p>
+        <p>No ads, no analytics, no tracking. Internet is used only by the optional in-app updater (GitHub releases). The accessibility service reads only the foreground app's package name — never screen content.</p>
       </article>
       <article class="feat-card reveal d1">
         <div class="feat-ic"><svg aria-hidden="true"><use href="#i-globe"/></svg></div>
@@ -455,7 +456,7 @@
       </div>
       <div class="faq-item reveal">
         <button class="faq-q" type="button" aria-expanded="false"><span>Does it drain battery?</span><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
-        <div class="faq-a"><div><p>No. AppDNS is event-driven and idle between app switches. There's no background polling and no network traffic — the app doesn't even hold the <code>INTERNET</code> permission.</p></div></div>
+        <div class="faq-a"><div><p>No. AppDNS is event-driven and idle between app switches — no background polling, no network traffic. The only internet use is the optional update check you trigger manually in Settings.</p></div></div>
       </div>
       <div class="faq-item reveal">
         <button class="faq-q" type="button" aria-expanded="false"><span>What happens after a reboot?</span><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
@@ -463,11 +464,15 @@
       </div>
       <div class="faq-item reveal">
         <button class="faq-q" type="button" aria-expanded="false"><span>Is the accessibility service safe? What can it see?</span><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
-        <div class="faq-a"><div><p>AppDNS reads <b>only the foreground app's package name</b> from window-change events. It never reads screen content, keystrokes or personal data, and it has no internet permission, so nothing can leave your device. The full source code is public on GitHub.</p></div></div>
+        <div class="faq-a"><div><p>AppDNS reads <b>only the foreground app's package name</b> from window-change events. It never reads screen content, keystrokes or personal data. There are no ads or analytics — the only network use is the optional update check/download from GitHub that you trigger in Settings. The full source code is public on GitHub.</p></div></div>
       </div>
       <div class="faq-item reveal">
         <button class="faq-q" type="button" aria-expanded="false"><span>Why does the ADB command fail on Oppo / OnePlus / Realme?</span><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
         <div class="faq-a"><div><p>ColorOS blocks ADB permission grants with <code>SecurityException: Neither user 2000…</code>. Enable Developer options → turn on <b>“Disable permission monitoring”</b> (sign-in may be required), restart the phone and run the command again. The in-app setup guide walks you through it.</p></div></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q" type="button" aria-expanded="false"><span>Why does Play Protect block the APK?</span><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="faq-a"><div><p>Google automatically blocks <b>sideloaded</b> apps that use an accessibility service in some regions — it's a blanket policy, not a malware finding. AppDNS is open source and clean. Workaround: install via ADB with <code>adb install -r AppDNS.apk</code>, which bypasses the install dialog. On a work profile, install into the work user (<code>adb shell pm list users</code> to find its ID, then <code>adb install -r --user &lt;id&gt; AppDNS.apk</code>). A Play Protect appeal is in progress; a Play Store listing is planned.</p></div></div>
       </div>
       <div class="faq-item reveal">
         <button class="faq-q" type="button" aria-expanded="false"><span>Is it free? Which Android versions work?</span><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
@@ -480,7 +485,7 @@
   <div class="container cta-inner reveal">
     <svg class="cta-shield" aria-hidden="true"><use href="#i-shield"/></svg>
     <h2>Your apps. Your DNS.<br>Automatically.</h2>
-    <p>Free forever · Apache 2.0 · no ads, no tracking, no internet permission.</p>
+    <p>Free forever · Apache 2.0 · no ads, no tracking, no analytics.</p>
     <div class="hero-cta">
       <a class="btn btn-invert btn-lg" href="https://github.com/Shishir-ip/AppDNS/releases/latest/download/AppDNS.apk">
         <svg aria-hidden="true"><use href="#i-download"/></svg>
